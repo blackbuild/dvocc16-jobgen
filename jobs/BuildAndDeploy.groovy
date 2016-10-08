@@ -59,7 +59,7 @@ stage("fetch from Jenkins") {
 }
 
 stage("deploy") {
-    copyToServer("${project.artifact.artifactId}.war", "$server.hostname:$server.basedir")
+    copyToServer("${project.artifact?.artifactId}.war", "$server.hostname:$server.basedir")
 }
 """
                 }
