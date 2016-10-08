@@ -32,10 +32,6 @@ stage("build") {
     pipelineJob("$projectName/Release") {
         logRotator(14, -1, -1, 1)
 
-        triggers {
-            scm("@hourly")
-        }
-
         definition {
             cps {
                 script """
@@ -54,10 +50,6 @@ stage("build") {
     project.servers.each { serverName, server ->
         pipelineJob("$projectName/Deploy-To-$serverName") {
             logRotator(14, -1, -1, 1)
-
-            triggers {
-                scm("@hourly")
-            }
 
             definition {
                 cps {
