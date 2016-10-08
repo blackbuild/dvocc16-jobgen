@@ -52,5 +52,8 @@ task cleanLibs(type:Delete) {
 
 task copyLibs(type: Copy, dependsOn: cleanLibs) {
     from configurations.compile
-    into "$buildDir/lib"
+    into "$buildDir/libs"
+    exclude 'groovy-all*.jar'
 }
+
+build.dependsOn copyLibs
