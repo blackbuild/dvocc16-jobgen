@@ -1,0 +1,8 @@
+/.project
+/build-dsl.sublime-project
+/build-dsl.sublime-workspace
+/.sonar_lock
+/*.iml
+/.gradle
+/build
+/.idea

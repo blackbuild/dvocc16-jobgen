@@ -1,0 +1,56 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url "http://repo.jenkins-ci.org/releases"
+    }
+}
+
+sourceSets {
+    jobs {
+        groovy {
+            srcDirs 'jobs', 'folders'
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    jobsCompile.extendsFrom compile
+    jobsRuntime.extendsFrom runtime
+}
+
+dependencies {
+    compile 'com.blackbuild.udom.config:demo-configuration:1.0-SNAPSHOT'
+    compile 'org.codehaus.groovy:groovy-all:2.4.6'
+    compile 'org.jenkins-ci.plugins:job-dsl-core:1.51'
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+        exclude module: 'groovy-all'
+    }
+    testRuntime "cglib:cglib-nodep:3.1"
+    testRuntime "org.objenesis:objenesis:2.1"
+}
+
+test {
+    inputs.dir('jobs')
+    inputs.dir('views')
+
+    maxHeapSize = "1g"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1.0'
+}
+
+task cleanLibs(type:Delete) {
+    delete "$buildDir/lib"
+}
+
+task copyLibs(type: Copy, dependsOn: cleanLibs) {
+    from configurations.compile
+    into "$buildDir/lib"
+}
